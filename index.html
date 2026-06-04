@@ -36,15 +36,27 @@
     ]
   }
   </script>
+
 </head>
 
 <body>
     <a id="top"></a>
 
-    <!-- ── Header ──────────────────────────────────────────── -->
     <header class="site-header" role="banner">
         <div class="site-header__inner">
             <a href="#top" class="site-header__title">Attractor Hysteresis</a>
+
+            <!-- ★ Hamburger button (new) ★ -->
+            <button class="site-header__burger" aria-label="Menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header__nav');
+                 if(n){
+                     n.classList.toggle('nav--open');
+                     this.setAttribute('aria-expanded', n.classList.contains('nav--open'));
+                 }">
+                <span class="site-header__burger-line"></span>
+                <span class="site-header__burger-line"></span>
+                <span class="site-header__burger-line"></span>
+            </button>
+
             <nav class="site-header__nav" aria-label="Sections">
                 <a href="#core">Core Dynamic</a>
                 <a href="#neural">Neural</a>
@@ -839,6 +851,20 @@
                     and decades of structural and behavioural observation of the architecture's outputs.</p>
                 <p>The neural description and the experiential description are one system seen from two positions, not
                     two competing accounts. This is not a clinical document.</p>
+
+                <p>This document is a theoretical model, not an established clinical or scientific consensus. It rests
+                    on a single neuroimaging study (Watanabe & Watanabe, 2023) conducted in children aged 5–13, combined
+                    with decades of personal observation and reflection. The neural findings provide a partial
+                    foundation; the sections on adult cognition, sensory processing, interoception, emotion, memory,
+                    sleep, and response to interventions are extrapolations that go beyond the available data. They are
+                    offered as an internally consistent description of one possible architecture, grounded in lived
+                    experience, but they have not been independently verified by controlled research.</p>
+                <p>The document is intended as a map for those who may recognise themselves in it, and as a provocation
+                    for further investigation—not as a diagnostic tool, treatment guideline, or replacement for
+                    professional clinical judgement. I have made every effort to distinguish where the evidence ends and
+                    inference begins, but readers should understand that many of the claims remain hypotheses. I welcome
+                    rigorous testing and correction.</p>
+
                 <p>ScepraX · <time datetime="2026-06-04">June 4, 2026</time></p>
             </footer>
 
@@ -851,5 +877,18 @@
     </footer>
 
 </body>
+
+<script>
+    const nav = document.querySelector('.site-header__nav');
+    const burger = document.querySelector('.site-header__burger');
+    if (nav && burger) {
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('nav--open');
+                burger.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+</script>
 
 </html>
