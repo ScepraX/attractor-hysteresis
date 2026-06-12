@@ -492,3 +492,51 @@ li {
         break-after: page;
     }
 }
+
+/* ── Appendix tables ────────────────────────────────── */
+.appendix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.6rem 0;
+    font-size: 0.92em;
+    line-height: 1.5;
+}
+
+.appendix-table caption {
+    text-align: left;
+    color: var(--ink-faint);
+    font-style: italic;
+    font-size: 0.88em;
+    margin-bottom: 0.6rem;
+}
+
+.appendix-table th,
+.appendix-table td {
+    border: 1px solid var(--rule);
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.appendix-table thead th {
+    background: var(--paper-card);
+    color: var(--moss-dark);
+    font-weight: 700;
+}
+
+.appendix-table tbody th {
+    background: var(--paper-warm);
+    font-weight: 600;
+}
+
+.appendix-table tbody tr:nth-child(even) td {
+    background: rgba(207, 201, 184, 0.18);
+}
+
+.appendix-note {
+    font-size: 0.9em;
+    color: var(--ink-soft);
+    border-left: 3px solid var(--moss-pale);
+    padding-left: 1rem;
+    margin: 1.2rem 0;
+}
