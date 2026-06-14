@@ -2,17 +2,36 @@
 <html lang="en">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ENCWQBF6NH"></script>
+    <!-- Google tag (gtag.js) with Consent Mode v2 -->
     <script>
+        // Consent Mode v2: deny everything BEFORE the tag loads, so no
+        // analytics/advertising cookies or identifiers are set until the
+        // visitor opts in. Satisfies GDPR/ePrivacy prior-consent (EU/UK),
+        // and CCPA/CPRA opt-out (California) since storage starts denied.
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
 
+        var stored = null;
+        try { stored = localStorage.getItem('cookie-consent'); } catch (e) {}
+
+        gtag('consent', 'default', {
+            'ad_storage': stored === 'granted' ? 'granted' : 'denied',
+            'ad_user_data': stored === 'granted' ? 'granted' : 'denied',
+            'ad_personalization': stored === 'granted' ? 'granted' : 'denied',
+            'analytics_storage': stored === 'granted' ? 'granted' : 'denied',
+            'wait_for_update': 500
+        });
+        // Cookieless pings while consent is denied (so EU visitors still
+        // get privacy-safe modelled measurement, no identifiers stored).
+        gtag('set', 'url_passthrough', true);
+        gtag('set', 'ads_data_redaction', true);
+
+        gtag('js', new Date());
         gtag('config', 'G-ENCWQBF6NH', {
             'cookie_domain': 'sceprax.github.io'
         });
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ENCWQBF6NH"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -2360,8 +2379,68 @@
 
     <!-- ── Site footer ───────────────────────────────────────── -->
     <footer class="site-footer">
-        <p>Attractor Hysteresis &nbsp;·&nbsp; ScepraX &nbsp;·&nbsp; <time datetime="2026-06-04">2026</time></p>
+        <p>Attractor Hysteresis &nbsp;·&nbsp; ScepraX &nbsp;·&nbsp; <time datetime="2026-06-04">2026</time>
+            &nbsp;·&nbsp; <a href="#" id="cookie-settings">Cookie settings</a></p>
     </footer>
+
+    <!-- ── Cookie consent banner ─────────────────────────────── -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite"
+        aria-label="Cookie consent" hidden>
+        <div class="cookie-banner__text">
+            <p><strong>This site uses cookies.</strong> We use Google Analytics to understand how the
+                page is read. No analytics or advertising cookies are set unless you accept. You can
+                change your choice at any time via the “Cookie settings” link in the footer.</p>
+        </div>
+        <div class="cookie-banner__actions">
+            <button type="button" class="cookie-btn cookie-btn--ghost" data-consent="denied">Reject
+                non-essential</button>
+            <button type="button" class="cookie-btn cookie-btn--solid" data-consent="granted">Accept</button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var KEY = 'cookie-consent';
+            var banner = document.getElementById('cookie-banner');
+
+            function read() {
+                try { return localStorage.getItem(KEY); } catch (e) { return null; }
+            }
+            function write(v) {
+                try { localStorage.setItem(KEY, v); } catch (e) {}
+            }
+            function apply(state) {
+                var v = state === 'granted' ? 'granted' : 'denied';
+                gtag('consent', 'update', {
+                    'ad_storage': v,
+                    'ad_user_data': v,
+                    'ad_personalization': v,
+                    'analytics_storage': v
+                });
+            }
+            function decide(state) {
+                write(state);
+                apply(state);
+                if (banner) banner.hidden = true;
+            }
+
+            // Show the banner only if no choice has been recorded yet.
+            if (!read() && banner) banner.hidden = false;
+
+            document.querySelectorAll('#cookie-banner [data-consent]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    decide(btn.getAttribute('data-consent'));
+                });
+            });
+
+            // Footer "Cookie settings" link re-opens the banner.
+            var reopen = document.getElementById('cookie-settings');
+            if (reopen) reopen.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (banner) banner.hidden = false;
+            });
+        })();
+    </script>
 
 </body>
 
